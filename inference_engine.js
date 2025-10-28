@@ -21,6 +21,7 @@ export function evaluateRule(rule, userCF) {
   let weightedSum = 0;
   let matchedSymptoms = 0;
   const totalSymptoms = rule.if.length;
+  const CF_MAX_LIMIT = 0.9998;
 
   for (const p of rule.if) {
     const cfPengguna = userCF[p.gejala] ?? 0;
@@ -39,7 +40,7 @@ export function evaluateRule(rule, userCF) {
       then: rule.then,
       value: 0,
       percentage: 0,
-      interpretation: "Tidak tahu/tidak yakin"
+      interpretation: "tidak yakin"
     };
   }
 
@@ -48,8 +49,10 @@ export function evaluateRule(rule, userCF) {
 
   if (matchedSymptoms === totalSymptoms && 
       rule.if.every(p => (userCF[p.gejala] ?? 0) === 1.0)) {
-    finalCF = 0.9998;
+    finalCF = CF_MAX_LIMIT;
   }
+  if (finalCF > CF_MAX_LIMIT) {
+      finalCF = CF_MAX_LIMIT;
   
   return { 
     then: rule.then, 
@@ -61,20 +64,35 @@ export function evaluateRule(rule, userCF) {
 
 export function evaluateRules(rules, userCF) {
   const results = {};
+  const CF_MAX_LIMIT = 0.9998;
   
   for (const rule of rules) {
     const { then: disease, value, percentage, interpretation } = evaluateRule(rule, userCF);
     
-    if (!results[disease] || results[disease].value < value) {
-      results[disease] = {
-        value,
-        percentage,
-        interpretation
-      };
+     if (newCFValue > 0) {
+      const limitedCFValue = Math.min(newCFValue, CF_MAX_LIMIT); 
+
+      if (!results[disease]) {
+        results[disease] = { value: limitedCFValue };
+      } else {
+        const oldCFValue = results[disease].value;
+        let combinedCF = oldCFValue + limitedCFValue * (1 - oldCFValue); 
+        results[disease].value = Math.min(combinedCF, CF_MAX_LIMIT);
+      }
     }
   }
   
-  return results;
+  const finalResults = {};
+  for (const disease in results) {
+    const finalCF = results[disease].value;
+    finalResults[disease] = {
+      value: finalCF,
+      percentage: finalCF * 100,
+      interpretation: interpretCF(finalCF)
+    };
+  }
+  
+  return finalResults;
 }
 
 export function formatResult(results, labels) {
