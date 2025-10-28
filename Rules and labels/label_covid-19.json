@@ -1,1 +1,39 @@
-
+{
+  "symptoms": {
+    "GR01": "Nyeri tenggorokan",
+    "GR02": "Demam",
+    "GR03": "Batuk",
+    "GR04": "Sakit kepala",
+    "GR05": "Bersin",
+    "GR06": "Pilek",
+    "GR07": "Hidung tersumbat",
+    "GR08": "Mual dan muntah",
+    "GR09": "Lemas",
+    "GR10": "Nyeri otot",
+    "GR11": "Berkeringat",
+    "GR12": "Menggigil",
+    "GS01": "Demam (suhu tubuh > 38 derajat Celcius)",
+    "GS02": "Sesak napas",
+    "GS03": "Batuk kering",
+    "GS04": "Nyeri dada saat bernapas atau batuk",
+    "GS05": "Batuk berdahak",
+    "GS06": "Detak jantung meningkat",
+    "GL01": "Diare",
+    "GL02": "Konjungtivitis (mata merah)",
+    "GL03": "Hilangnya kemampuan mengecap rasa dan mencium bau",
+    "GL04": "Ruam di kulit"
+  },
+  "diseases": {
+    "P001": "Infeksi Saluran Pernapasan Atas (ISPA)",
+    "P002": "Covid-19",
+    "P003": "Pneumonia"
+  },
+"certainty_options": [
+    { "value": 0.0, "text": "Tidak" },
+    { "value": 0.2, "text": "Sedikit yakin" },
+    { "value": 0.4, "text": "Mungkin" },
+    { "value": 0.6, "text": "Kemungkinan besar" },
+    { "value": 0.8, "text": "Yakin" },
+    { "value": 1.0, "text": "Iya" }
+  ]
+}
