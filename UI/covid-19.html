@@ -1,1 +1,250 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sistem Pakar Diagnosa COVID-19</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+    h1 {
+      color: #333;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .instructions {
+      margin-bottom: 20px;
+      color: #666;
+      font-size: 16px;
+      text-align: center;
+    }
+    .question {
+      margin: 20px 0;
+      padding: 15px;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      background-color: #fff;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .question label.symptom {
+      display: block;
+      margin-bottom: 15px;
+      font-weight: bold;
+      color: #333;
+      font-size: 16px;
+    }
+    .options {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .option-label {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 16px;
+      border: 2px solid #007bff;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      user-select: none;
+      font-size: 14px;
+    }
+    .option-label:hover {
+      background-color: #e7f1ff;
+    }
+    .option-input {
+      display: none;
+    }
+    .option-input:checked + .option-label {
+      background-color: #007bff;
+      color: white;
+    }
+    .button-container {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin: 30px auto;
+    }
+    button {
+      width: 200px;
+      padding: 12px 0;
+      color: white;
+      border: none;
+      border-radius: 25px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    button:hover {
+      transform: translateY(-1px);
+    }
+    .btn-primary {
+      background-color: #007bff;
+    }
+    .btn-primary:hover {
+      background-color: #0056b3;
+    }
+    .btn-secondary {
+      background-color: #6c757d;
+    }
+    .btn-secondary:hover {
+      background-color: #545b62;
+    }
+    #result {
+      margin-top: 30px;
+      padding: 20px;
+      background-color: #f8f9fa;
+      border-radius: 8px;
+    }
+    .result-item {
+      background-color: white;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .result-item strong {
+      color: #007bff;
+    }
+  </style>
+  <script type="module">
+    import { LABELS_JSON, RULES_JSON, loadJSON, evaluateRules, formatResult } from "./engine.js";
 
+    let symptoms = {}, rules = [], labels = {};
+    let certaintyValues = [];
+
+    async function init() {
+      const container = document.getElementById("questions");
+      try {
+        labels = await loadJSON(LABELS_JSON);
+        symptoms = labels.symptoms;
+        rules = await loadJSON(RULES_JSON);
+        certaintyValues = labels.certainty_options || []; 
+        
+        console.log("Data loaded:", { symptoms, rules, certaintyValues });
+        
+        container.innerHTML = "";
+        
+        for (const [code, symptom] of Object.entries(symptoms)) {
+          const qDiv = document.createElement("div");
+          qDiv.className = "question";
+
+          const sympLabel = document.createElement("label");
+          sympLabel.className = "symptom";
+          sympLabel.textContent = `${code}. ${symptom}`;
+          qDiv.appendChild(sympLabel);
+
+          const optionsDiv = document.createElement("div");
+          optionsDiv.className = "options";
+          
+          certaintyValues.forEach(({value, text}) => {
+            const id = `${code}_${value}`;
+            
+            const input = document.createElement("input");
+            input.type = "radio";
+            input.id = id;
+            input.name = code;
+            input.value = value.toFixed(1);
+            input.className = "option-input";
+            
+            if (value === 0.0) {
+              input.checked = true;
+            }
+            
+            const label = document.createElement("label");
+            label.htmlFor = id;
+            label.className = "option-label";
+            label.textContent = text;
+            
+            optionsDiv.appendChild(input);
+            optionsDiv.appendChild(label);
+          });
+          
+          qDiv.appendChild(optionsDiv);
+          container.appendChild(qDiv);
+        }
+
+        Object.keys(symptoms).forEach(code => {
+          const defaultOption = document.querySelector(`input[name="${code}"][value="0.0"]`);
+          if (defaultOption) defaultOption.checked = true;
+        });
+
+      } catch (error) {
+        console.error("Error loading data:", error);
+        container.innerHTML = 
+          `<div class="error">Error loading data: ${error.message}</div>`;
+      }
+    }
+
+    async function onDiagnose() {
+      try {
+        const userCF = {};
+        for (const code of Object.keys(symptoms)) {
+          const selectedOption = document.querySelector(`input[name="${code}"]:checked`);
+          userCF[code] = selectedOption ? Number(selectedOption.value) : 0; 
+        }
+
+        console.log("User inputs:", userCF);
+        const results = evaluateRules(rules, userCF);
+        const formattedResults = formatResult(results, labels.diseases);
+        console.log("Diagnosis results:", formattedResults);
+        
+        const out = document.getElementById("result");
+        out.innerHTML = "<h3>Hasil Diagnosa:</h3>";
+        
+        if (formattedResults.length === 0) {
+          out.innerHTML += "<p>Tidak dapat menentukan diagnosis berdasarkan gejala yang dipilih.</p>";
+        } else {
+          formattedResults.forEach(result => {
+            out.innerHTML += `
+              <div class="result-item">
+                <strong>Penyakit:</strong> ${result.penyakit}<br>
+                <strong>Nilai CF:</strong> ${result.cf.toFixed(3)}<br>
+                <strong>Persentase:</strong> ${result.percentage}%<br>
+                <strong>Interpretasi:</strong> ${result.interpretation}
+              </div>`;
+          });
+        }
+      } catch (error) {
+        console.error("Error in diagnosis:", error);
+        document.getElementById("result").innerHTML = 
+          `<div class="error">Error during diagnosis: ${error.message}</div>`;
+      }
+    }
+
+    function onReset() {
+      Object.keys(symptoms).forEach(code => {
+        const defaultOption = document.querySelector(`input[name="${code}"][value="0.0"]`);
+        if (defaultOption) {
+            defaultOption.checked = true;
+        }
+      });   
+      document.getElementById("result").innerHTML = "";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    
+    window.onDiagnose = onDiagnose;
+    window.onReset = onReset;
+    window.addEventListener("load", init);
+  </script>
+</head>
+<body>
+  <h1>Sistem Pakar Diagnosa COVID-19</h1>
+  <p class="instructions">Jawablah pertanyaan berikut berdasarkan kondisi Anda:</p>
+  <div id="questions"></div>
+  
+  <div class="button-container">
+    <button class="btn-primary" onclick="onDiagnose()">Diagnosa</button>
+    <button class="btn-secondary" onclick="onReset()">Reset</button>
+  </div>
+  
+  <div id="result"></div>
+</body>
+</html>
