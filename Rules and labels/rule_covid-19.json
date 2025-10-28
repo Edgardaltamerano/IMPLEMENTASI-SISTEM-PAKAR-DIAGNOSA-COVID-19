@@ -1,1 +1,45 @@
-
+[
+  {
+    "id": "R1",
+    "if": [
+      {"gejala": "GR03", "cf": 0.8},
+      {"gejala": "GR05", "cf": 0.7},
+      {"gejala": "GR06", "cf": 1.0},
+      {"gejala": "GR07", "cf": 0.8},
+      {"gejala": "GR01", "cf": 0.8},
+      {"gejala": "GR02", "cf": 0.7},
+      {"gejala": "GR04", "cf": 0.6},
+      {"gejala": "GR10", "cf": 0.6}
+    ],
+    "then": "P001",
+    "cf": 1.0
+  },
+  {
+    "id": "R2",
+    "if": [
+      {"gejala": "GR11", "cf": 0.7},
+      {"gejala": "GR12", "cf": 0.7},
+      {"gejala": "GS04", "cf": 1.0},
+      {"gejala": "GR08", "cf": 0.6},
+      {"gejala": "GR09", "cf": 0.7},
+      {"gejala": "GS06", "cf": 0.8},
+      {"gejala": "GS05", "cf": 0.8}
+    ],
+    "then": "P003",
+    "cf": 1.0
+  },
+  {
+    "id": "R3",
+    "if": [
+      {"gejala": "GS02", "cf": 1.0},
+      {"gejala": "GS03", "cf": 0.8},
+      {"gejala": "GL01", "cf": 0.6},
+      {"gejala": "GS01", "cf": 1.0},
+      {"gejala": "GL02", "cf": 0.6},
+      {"gejala": "GL03", "cf": 0.6},
+      {"gejala": "GL04", "cf": 0.6}
+    ],
+    "then": "P002",
+    "cf": 1.0
+  }
+]
