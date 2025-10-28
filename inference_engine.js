@@ -51,8 +51,10 @@ export function evaluateRule(rule, userCF) {
       rule.if.every(p => (userCF[p.gejala] ?? 0) === 1.0)) {
     finalCF = CF_MAX_LIMIT;
   }
+  
   if (finalCF > CF_MAX_LIMIT) {
-      finalCF = CF_MAX_LIMIT;
+    finalCF = CF_MAX_LIMIT;
+  } 
   
   return { 
     then: rule.then, 
@@ -67,9 +69,9 @@ export function evaluateRules(rules, userCF) {
   const CF_MAX_LIMIT = 0.9998;
   
   for (const rule of rules) {
-    const { then: disease, value, percentage, interpretation } = evaluateRule(rule, userCF);
+    const { then: disease, value: newCFValue } = evaluateRule(rule, userCF);
     
-     if (newCFValue > 0) {
+    if (newCFValue > 0) {
       const limitedCFValue = Math.min(newCFValue, CF_MAX_LIMIT); 
 
       if (!results[disease]) {
