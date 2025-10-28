@@ -41,5 +41,38 @@
     ],
     "then": "P002",
     "cf": 1.0
+  },
+  {
+    "id": "R4",
+    "if": [
+      {"gejala": "GL03", "cf": 1.0},
+      {"gejala": "GS02", "cf": 0.8},
+      {"gejala": "GL04", "cf": 0.7},
+      {"gejala": "GL02", "cf": 0.6}
+    ],
+    "then": "P002",
+    "cf": 0.8
+  },
+  {
+    "id": "R5",
+    "if": [
+      {"gejala": "GR06", "cf": 1.0},
+      {"gejala": "GR05", "cf": 0.9},
+      {"gejala": "GR07", "cf": 0.9},
+      {"gejala": "GR03", "cf": 0.6}
+    ],
+    "then": "P001",
+    "cf": 0.8
+  },
+  {
+    "id": "R6",
+    "if": [
+      {"gejala": "GS04", "cf": 1.0},
+      {"gejala": "GS05", "cf": 0.8},
+      {"gejala": "GR12", "cf": 0.7},
+      {"gejala": "GR02", "cf": 0.6}
+    ],
+    "then": "P003",
+    "cf": 0.7
   }
 ]
