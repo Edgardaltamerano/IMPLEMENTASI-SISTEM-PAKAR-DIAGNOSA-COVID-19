@@ -1,5 +1,5 @@
-export const LABELS_JSON = "label_covid-19.json";
-export const RULES_JSON = "rule_covid-19.json";
+export const LABELS_JSON = "../Rule/label_covid-19.json";
+export const RULES_JSON = "../Rule/rule_covid-19.json";
 
 export async function loadJSON(path) {
   const res = await fetch(path);
