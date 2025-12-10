@@ -1,0 +1,308 @@
+/* style.css - VERSI TERAKHIR: Header Solid, Body Gambar, Premium Design */
+
+/* Catatan: Pastikan Anda menambahkan link font Montserrat di UI_covid-19.html */
+
+/* ==============================================
+   0. FONT & LATAR BELAKANG GLOBAL (BODY)
+   ============================================== */
+body {
+    font-family: 'Montserrat', sans-serif;
+    max-width: 100%; 
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+    color: #333;
+    
+    /* BACKGROUND IMAGE UNTUK SELURUH HALAMAN DI BAWAH HEADER */
+    /* Pastikan path ini benar: Naik 1 tingkat (../) dari folder UI, lalu masuk ke folder assets */
+    background-image: url('../assets/background.png'); 
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-color: #e0f0ff; /* Fallback warna terang jika gambar gagal */
+    
+    position: relative;
+}
+
+/* ==============================================
+   1. HEADER & INSTRUKSI (LATAR BELAKANG SOLID)
+   ============================================== */
+
+/* Container yang memiliki Background Solid (Putih) */
+.header-container {
+    background-color: #79c9da; /* LATAR BELAKANG PUTIH SOLID */
+    padding: 30px 20px 20px 20px;
+    text-align: center;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2); /* Bayangan jelas di bawah header */
+    margin-bottom: 30px;
+    border-radius: 15px 15px 15px 15px; /* Sudut bawah melengkung */
+    
+    /* Batasi lebar konten di tengah agar sejajar dengan konten utama */
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    color: #1a237e; /* Biru Tua */
+    font-size: 2.2em;
+    margin-top: 0;
+    padding-bottom: 10px;
+}
+
+.instructions {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 15px;
+    font-size: 1.1em;
+    color: #3949ab;
+    line-height: 1.6;
+    background-color: #e8f5f9; /* Latar belakang sangat muda */
+    border-radius: 8px;
+    border: 1px solid #c8e6e9;
+}
+
+
+/* ==============================================
+   2. KONTEN UTAMA (Pertanyaan)
+   ============================================== */
+#questions, .button-container {
+    max-width: 1000px; 
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 20px; 
+}
+
+.question {
+    margin: 30px 0;
+    padding: 30px;
+    border-radius: 15px;
+    background-color: #ffffff; /* Kartu Pertanyaan juga PUTIH SOLID */ 
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15); /* Bayangan yang menonjol */
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; 
+}
+.question:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+}
+
+.question label.symptom {
+    display: block;
+    margin-bottom: 25px;
+    font-weight: 700;
+    color: #4a148c; /* Ungu gelap */
+    font-size: 1.2em;
+    border-left: 6px solid #8e24aa; 
+    padding-left: 15px;
+}
+
+/* ==============================================
+   3. OPSI JAWABAN (INTERAKTIF)
+   ============================================== */
+.options {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+/* Menyembunyikan radio button bawaan */
+.option-input {
+    display: none;
+}
+.option-label {
+    display: inline-flex;
+    align-items: center;
+    padding: 12px 24px;
+    border: 2px solid #00acc1; 
+    border-radius: 30px;
+    color: #00838f;
+    font-weight: 600;
+    background-color: #e0f7fa;
+    transition: all 0.3s ease;
+    user-select: none;
+}
+.option-label:hover {
+    background-color: #b2ebf2;
+    border-color: #00acc1;
+    cursor: pointer;
+}
+.option-input:checked + .option-label {
+    background: linear-gradient(90deg, #007bff, #00acc1); 
+    color: white;
+    transform: scale(1.08); 
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.6);
+    border-color: transparent;
+}
+
+
+/* ==============================================
+   4. STYLING TOMBOL
+   ============================================== */
+.button-container {
+    display: flex;
+    gap: 40px;
+    justify-content: center;
+    margin: 60px auto;
+}
+button {
+    width: 250px;
+    padding: 18px 35px;
+    border-radius: 40px;
+    font-size: 1.1em;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    border: none;
+}
+.btn-primary {
+    background: linear-gradient(45deg, #007bff, #4fc3f7); 
+    color: white;
+    box-shadow: 0 8px 20px rgba(0, 123, 255, 0.5);
+}
+.btn-primary:hover {
+    background: linear-gradient(45deg, #0056b3, #00acc1);
+    transform: translateY(-5px); 
+    box-shadow: 0 12px 25px rgba(0, 123, 255, 0.7);
+}
+.btn-secondary {
+    background-color: #78909c; 
+    color: white;
+    box-shadow: 0 5px 15px rgba(120, 144, 156, 0.4);
+}
+.btn-secondary:hover {
+    background-color: #546e7a;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(84, 110, 122, 0.6);
+}
+
+
+/* ==============================================
+   5. STYLING POP-UP (MODAL)
+   ============================================== */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.6);
+    backdrop-filter: blur(5px);
+    animation: fadeIn 0.4s ease-out;
+}
+
+.modal-content {
+    background-color: #ffffff;
+    margin: 8% auto;
+    padding: 45px;
+    border-radius: 25px; 
+    width: 90%; 
+    max-width: 650px;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+    animation: slideIn 0.6s cubic-bezier(0.17, 0.84, 0.44, 1); 
+}
+.modal-content h2 {
+    color: #4a148c;
+    border-bottom: 3px solid #e1bee7;
+    text-align: center;
+    font-weight: 700;
+    margin-top: 0;
+}
+.result-item {
+    background-color: #f5f5f5; 
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    border-left: 6px solid #26c6da; 
+}
+/* Highlight Hasil Teratas */
+.modal-content .result-item:first-child {
+    background-color: #e8f5e9; 
+    border-left-color: #388e3c; 
+    color: #1b5e20;
+    font-weight: 600;
+    animation: glowHighlight 2s infinite alternate; 
+}
+.modal-content .result-item:first-child strong {
+    color: #388e3c;
+    font-size: 1.2em;
+}
+
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1;
+    transition: color 0.3s, transform 0.3s;
+}
+.close-btn:hover,
+.close-btn:focus {
+    color: #d32f2f; 
+    transform: rotate(180deg) scale(1.1); 
+    cursor: pointer;
+}
+
+/* Animasi Kunci (Keyframes) */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+@keyframes slideIn {
+    from { transform: translateY(-100px) scale(0.8); opacity: 0; }
+    to { transform: translateY(0) scale(1); opacity: 1; }
+}
+@keyframes glowHighlight {
+    from { box-shadow: 0 0 5px rgba(56, 142, 60, 0.5); }
+    to { box-shadow: 0 0 15px rgba(56, 142, 60, 0.8); }
+}
+
+
+/* ==============================================
+   6. RESPONSIVITAS (PENTING UNTUK HP!)
+   ============================================== */
+@media (max-width: 768px) {
+    #questions, .button-container {
+        padding: 0 10px;
+    }
+    h1 {
+        font-size: 1.8em;
+    }
+    .button-container {
+        flex-direction: column; 
+        align-items: center;
+        gap: 20px;
+    }
+    button {
+        width: 90%;
+        max-width: 350px;
+    }
+    .options {
+        gap: 8px; 
+        justify-content: center;
+    }
+    .option-label {
+        font-size: 0.9em;
+        padding: 10px 15px;
+    }
+}
+@media (max-width: 480px) {
+    .options {
+        flex-direction: column; 
+    }
+    .option-label {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+    }
+    .header-container, .modal-content {
+        padding: 20px;
+    }
+}
